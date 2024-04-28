@@ -3,7 +3,8 @@
             [server.socket :as socket]
             [mire.player :as player]
             [mire.commands :as commands]
-            [mire.rooms :as rooms]))
+            [mire.rooms :as rooms]
+            [mire.chests :as chests]))
 
 (defn- cleanup []
   "Drop all inventory and remove player from room and player list."
@@ -36,20 +37,22 @@
        (commute (:inhabitants @player/*current-room*) conj player/*name*)
        (commute player/streams assoc player/*name* *out*))
 
-      (println (commands/look)) (print player/prompt) (flush)
+      (println (commands/look)) (println (player/health-bar)) (print player/prompt) (flush)
 
       (try (loop [input (read-line)]
              (when input
                (println (commands/execute input))
-               (.flush *err*)
+               (.flush *err*) 
+               (println (player/health-bar)) (flush)
                (print player/prompt) (flush)
                (recur (read-line))))
            (finally (cleanup))))))
 
 (defn -main
   ([port dir]
-     (rooms/add-rooms dir)
+     (rooms/add-rooms (str dir "rooms"))
+     (chests/add-chests (str dir "chests"))
      (defonce server (socket/create-server (Integer. port) mire-handle-client))
      (println "Launching Mire server on port" port))
-  ([port] (-main port "resources/rooms"))
+  ([port] (-main port "resources/"))
   ([] (-main 3333)))

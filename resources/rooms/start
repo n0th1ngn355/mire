@@ -1,2 +1,4 @@
 {:desc "You find yourself in a round room with a pillar in the middle."
+ :chests #{:old_chest_1}
+ :items #{:hp-potion}
  :exits {:north :closet :south :hallway}}
