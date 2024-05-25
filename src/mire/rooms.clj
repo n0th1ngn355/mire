@@ -10,7 +10,8 @@
             :is_closed (ref (or (:is_closed room) false))
             :desc (:desc room)
             :exits (ref (:exits room))
-            :items (ref (or (:items room) #{})) 
+            :items (ref (or (:items room) #{}))
+            :letters (ref (or (:letters room) #{})) 
             :chests (ref (or (:chests room) #{})) 
             :inhabitants (ref #{})}})))
 

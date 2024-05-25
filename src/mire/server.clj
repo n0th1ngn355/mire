@@ -4,6 +4,8 @@
             [mire.player :as player]
             [mire.commands :as commands]
             [mire.rooms :as rooms]
+            [mire.letters :as letters]
+            [mire.items :as items]
             [mire.chests :as chests]))
 
 (defn- cleanup []
@@ -32,18 +34,22 @@
     (print "\nWhat is your name? ") (flush)
     (binding [player/*name* (get-unique-player-name (read-line))
               player/*current-room* (ref (@rooms/rooms :start))
-              player/*inventory* (ref #{})]
+              player/*inventory* (ref #{})
+              player/*luck* 20
+              player/*money* 0
+              player/*current-chest* nil] 
       (dosync
        (commute (:inhabitants @player/*current-room*) conj player/*name*)
        (commute player/streams assoc player/*name* *out*))
 
-      (println (commands/look)) (println (player/health-bar)) (print player/prompt) (flush)
+      (println (commands/look)) (print (player/health-bar)) (println (str " Money: " player/*money*)) (print player/prompt) (flush)
 
       (try (loop [input (read-line)]
              (when input
                (println (commands/execute input))
-               (.flush *err*) 
-               (println (player/health-bar)) (flush)
+               (.flush *err*)
+               (print (player/health-bar)) (flush)
+               (println (str " Money: " player/*money*)) (flush)
                (print player/prompt) (flush)
                (recur (read-line))))
            (finally (cleanup))))))
@@ -52,6 +58,8 @@
   ([port dir]
      (rooms/add-rooms (str dir "rooms"))
      (chests/add-chests (str dir "chests"))
+     (letters/add-letters (str dir "letters"))
+     (items/add-items (str dir "items"))
      (defonce server (socket/create-server (Integer. port) mire-handle-client))
      (println "Launching Mire server on port" port))
   ([port] (-main port "resources/"))
