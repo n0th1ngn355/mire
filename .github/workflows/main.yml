@@ -9,12 +9,29 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-    - name: Run tests
-      run: ./lein test
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          curl -O https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
+          chmod +x lein
+          mkdir -p ~/.lein/self-installs
+          mv lein ~/.lein/self-installs/lein
+          ~/.lein/self-installs/lein version
+
+      - name: Cache .m2 directory
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/project.clj') }}
+          restore-keys: |
+            ${{ runner.os }}-m2-
+
+      - name: Run tests
+        run: ~/.lein/self-installs/lein test
     
   build:
     needs: test
