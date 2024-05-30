@@ -1,4 +1,4 @@
-FROM openjdk:17-jdk-slim
+FROM adoptopenjdk/openjdk11:alpine-jre
 
 WORKDIR /app
 
