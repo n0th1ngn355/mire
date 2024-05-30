@@ -1,4 +1,4 @@
-FROM clojure:openjdk-11-tools-deps
+FROM clojure:lein-2.9.6-openjdk-11
 
 WORKDIR /app
 
