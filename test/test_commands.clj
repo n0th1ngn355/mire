@@ -11,21 +11,24 @@
   `(deftest ~name
      (binding [player/*current-room* (ref (:start @rooms/rooms))
                player/*inventory* (ref #{})
-               player/*name* "Tester"]
+               player/*name* "Tester"
+               player/*luck* 20
+               player/*money* 0
+               player/*current-chest* nil]
        ~@body)))
 
 (def-command-test test-execute
   ;; Silence the error!
   (binding [*err* (io/writer "/dev/null")]
     (is (= "You can't do that!"
-           (execute "discard a can of beans into the fridge"))))
+           (execute "discard a can of beans into the fridge")))) 
   (is (re-find #"closet" (execute "north")))
   (is (= @player/*current-room* (:closet @rooms/rooms))))
 
 (def-command-test test-move
   (is (re-find #"hallway" (execute "south")))
-  (is (re-find #"promenade" (move "east")))
-  (is (re-find #"can't go that way" (move "south"))))
+  (is (re-find #"promenade" (move "south")))
+  (is (re-find #"can't" (move "east"))))
 
 (def-command-test test-look
   (binding [player/*current-room* (ref (:closet @rooms/rooms))]

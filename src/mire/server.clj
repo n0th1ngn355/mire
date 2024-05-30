@@ -1,4 +1,5 @@
 (ns mire.server
+  (:gen-class)
   (:require [clojure.java.io :as io]
             [server.socket :as socket]
             [mire.player :as player]

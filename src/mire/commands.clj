@@ -74,15 +74,15 @@
            (if (= target-name :end)
              (if (@player/*inventory* :golden_key)
                (do
-                 (teleport target)
-                 (println (look)))
+                 (teleport target) 
+                 (look))
                "You can't come here yet!")
              (do
                (teleport target)
-               (println (look))
                (if (= target-name :swamp)
-                 "It seems the ogre is sleeping! You can go to the casino today"
-                 "")))) 
+                 (println "It seems the ogre is sleeping! You can go to the casino today")
+                 "")
+               (look))))
          "You can't go that way."))))
 
 

@@ -12,7 +12,7 @@
   (doseq [name [:start :closet :hallway :promenade]]
     (is (contains? @rooms name)))
   (is (re-find #"promenade" (:desc (:promenade @rooms))))
-  (is (= :hallway (:west @(:exits (:promenade @rooms)))))
+  (is (= :hallway (:north @(:exits (:promenade @rooms)))))
   (is (some #{:bunny} @(:items (:promenade @rooms))))
   (is (empty? @(:inhabitants (:promenade @rooms)))))
 
