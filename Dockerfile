@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk11:alpine-jre
+FROM clojure:openjdk-11-tools-deps
 
 WORKDIR /app
 
