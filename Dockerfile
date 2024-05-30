@@ -1,4 +1,4 @@
-FROM clojure:lein-2.9.6-openjdk-11
+FROM adoptopenjdk/openjdk11:alpine-jre
 
 WORKDIR /app
 
