@@ -1,7 +1,7 @@
-FROM openjdk:17-slim
+FROM openjdk:11-jre-slim
 
 WORKDIR /app
 
-COPY . .
+COPY target/mire_game.jar .
 
-CMD ["lein", "run"]
+CMD ["java", "-jar", "mire_game.jar"]
